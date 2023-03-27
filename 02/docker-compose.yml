@@ -1,0 +1,20 @@
+# Only for local dev use
+version: '3.8'
+
+networks:
+  network-dev:
+    external: true
+
+services:
+  api:
+    # image: consoleApp1
+    container_name: console_app1
+    restart: always
+    build:
+      context: ./App
+      dockerfile: ./Dockerfile
+    networks:
+      - network-dev
+    entrypoint: sh -c 'apk upgrade --no-cache && apk add ca-certificates --no-cache && apk add curl --no-cache curl && curl -v -k https://cosmosdb.test:8081/_explorer/emulator.pem > /usr/local/share/ca-certificates/emulatorcert.crt && update-ca-certificates && dotnet CosmosApp.dll'
+    environment:
+      COSMOSDB_URI: https://cosmosdb.test:8081

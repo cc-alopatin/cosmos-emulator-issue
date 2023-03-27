@@ -1,0 +1,27 @@
+version: '3.8'
+
+networks:
+  network-dev:
+    name: network-dev
+
+services:
+  local.cosmosdb:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    container_name: cosmosdb_test
+    hostname: cosmosdb.test
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=10
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+    ports:
+      - 9091:8081
+      - 10251:10251
+      - 10252:10252
+      - 10253:10253
+      - 10254:10254
+    networks:
+      - network-dev
+    volumes:
+      - cosmosdrive1:/tmp/cosmos/appdata
+
+volumes:
+  cosmosdrive1:
